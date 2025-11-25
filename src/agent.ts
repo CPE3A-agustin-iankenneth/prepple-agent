@@ -6,9 +6,11 @@ import {
   defineAgent,
   metrics,
   voice,
+  inference,
 } from '@livekit/agents';
 import * as silero from '@livekit/agents-plugin-silero';
 import * as google from '@livekit/agents-plugin-google';
+import * as livekit from '@livekit/agents-plugin-livekit';
 import { BackgroundVoiceCancellation } from '@livekit/noise-cancellation-node';
 import dotenv from 'dotenv';
 import { fileURLToPath } from 'node:url';
@@ -118,7 +120,7 @@ async function sendInterviewTranscript(
   usageMetrics: any,
 ): Promise<void> {
   try {
-    const apiUrl = process.env.NEXT_APP_API_URL || 'http://localhost:3000';
+    const apiUrl = process.env.NEXT_APP_API_URL || 'http://localhost:3000/api';
 
     const response = await fetch(`${apiUrl}/interview-result`, {
       method: 'POST',
@@ -153,6 +155,8 @@ export default defineAgent({
     proc.userData.vad = await silero.VAD.load();
   },
   entry: async (ctx: JobContext) => {
+    const vad = ctx.proc.userData.vad! as silero.VAD;
+
     // Set up a voice AI pipeline using OpenAI, Cartesia, AssemblyAI, and the LiveKit turn detector
     let instructions = `You are a helpful voice AI assistant. The user is interacting with you via voice. Your responses are concise and to the point.`;
     let roomData: RoomData;
@@ -222,12 +226,15 @@ export default defineAgent({
     }
 
     const session = new voice.AgentSession({
+       turnDetection: new livekit.turnDetector.EnglishModel(),
        llm: new google.beta.realtime.RealtimeModel({
           model: "gemini-2.0-flash-exp",
           voice: "Puck",
           temperature: 0.8,
           instructions: instructions,
        }),
+       stt: new inference.STT({ language: 'en' }),
+       vad: vad,
     });
 
     const assistant = new Assistant(instructions);
