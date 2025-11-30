@@ -15,8 +15,8 @@ importers:
         specifier: ^1.0.10
         version: 1.0.10(@livekit/rtc-node@0.13.20)
       '@livekit/agents-plugin-google':
-        specifier: ~1.0.11
-        version: 1.0.11(@livekit/agents@1.0.10(@livekit/rtc-node@0.13.20))(@livekit/rtc-node@0.13.20)
+        specifier: ~1.0.22
+        version: 1.0.22(@livekit/agents@1.0.10(@livekit/rtc-node@0.13.20))(@livekit/rtc-node@0.13.20)
       '@livekit/agents-plugin-livekit':
         specifier: ^1.0.10
         version: 1.0.10(@livekit/agents@1.0.10(@livekit/rtc-node@0.13.20))
@@ -669,10 +669,10 @@ packages:
   '@jridgewell/trace-mapping@0.3.31':
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
 
-  '@livekit/agents-plugin-google@1.0.11':
-    resolution: {integrity: sha512-NSwS9j516q7q87qTlJIqRg7qqCUqD0SYN/aKq9WJgNx82Z/IBHh3UxbIMkWQSi3HZg9c4gY5dvkAc+ZbqOw9rw==}
+  '@livekit/agents-plugin-google@1.0.22':
+    resolution: {integrity: sha512-ctnNKlbwmIRE1qRqt8OJvfCaP6NARbGle8fpS0IpaSnRFf2Pg2PpWu+0kI4nr8STECggDRBaPXX630L99h48vg==}
     peerDependencies:
-      '@livekit/agents': 1.0.11
+      '@livekit/agents': 1.0.22
       '@livekit/rtc-node': ^0.13.12
 
   '@livekit/agents-plugin-livekit@1.0.10':
@@ -2556,7 +2556,7 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
 
-  '@livekit/agents-plugin-google@1.0.11(@livekit/agents@1.0.10(@livekit/rtc-node@0.13.20))(@livekit/rtc-node@0.13.20)':
+  '@livekit/agents-plugin-google@1.0.22(@livekit/agents@1.0.10(@livekit/rtc-node@0.13.20))(@livekit/rtc-node@0.13.20)':
     dependencies:
       '@google/genai': 1.25.0
       '@livekit/agents': 1.0.10(@livekit/rtc-node@0.13.20)

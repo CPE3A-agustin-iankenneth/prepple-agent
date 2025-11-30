@@ -226,31 +226,24 @@ export default defineAgent({
     }
 
     const session = new voice.AgentSession({
-       turnDetection: new livekit.turnDetector.EnglishModel(),
+      //  turnDetection: new livekit.turnDetector.EnglishModel(),
        llm: new google.beta.realtime.RealtimeModel({
-          model: "gemini-2.0-flash-exp",
+          model: "gemini-2.5-flash-native-audio-preview-09-2025",
           voice: "Puck",
           temperature: 0.8,
           instructions: instructions,
+          // realtimeInputConfig: {
+          //   automaticActivityDetection: {
+          //     disabled: true,
+          //   }
+          // }
        }),
-       stt: new inference.STT({ language: 'en' }),
-       vad: vad,
+      //  vad,
+      //  stt: new inference.STT({ language: 'en' }),
     });
 
     const assistant = new Assistant(instructions);
     
-    // To use a realtime model instead of a voice pipeline, use the following session setup instead.
-    // (Note: This is for the OpenAI Realtime API. For other providers, see https://docs.livekit.io/agents/models/realtime/))
-    // 1. Install '@livekit/agents-plugin-openai'
-    // 2. Set OPENAI_API_KEY in .env.local
-    // 3. Add import `import * as openai from '@livekit/agents-plugin-openai'` to the top of this file
-    // 4. Use the following session setup instead of the version above
-    // const session = new voice.AgentSession({
-    //   llm: new openai.realtime.RealtimeModel({ voice: 'marin' }),
-    // });
-
-    // Metrics collection, to measure pipeline performance
-    // For more information, see https://docs.livekit.io/agents/build/metrics/
     const usageCollector = new metrics.UsageCollector();
     session.on(voice.AgentSessionEventTypes.MetricsCollected, (ev) => {
       metrics.logMetrics(ev.metrics);
@@ -289,7 +282,6 @@ export default defineAgent({
     // Join the room and connect to the user
     await ctx.connect();
 
-    
     const handle = session.generateReply({
       instructions: 'Greet the user and offer your assistance. Introduce yourself as Prepple, the AI interview assistant. Do not begin asking questions yet. Just greet the candidate and wait for their response.',
     });
