@@ -1,16 +1,14 @@
 import {
   type JobContext,
   type JobProcess,
-  WorkerOptions,
+  ServerOptions,
   cli,
   defineAgent,
   metrics,
   voice,
-  inference,
 } from '@livekit/agents';
 import * as silero from '@livekit/agents-plugin-silero';
 import * as google from '@livekit/agents-plugin-google';
-import * as livekit from '@livekit/agents-plugin-livekit';
 import { BackgroundVoiceCancellation } from '@livekit/noise-cancellation-node';
 import dotenv from 'dotenv';
 import { fileURLToPath } from 'node:url';
@@ -155,7 +153,7 @@ export default defineAgent({
     proc.userData.vad = await silero.VAD.load();
   },
   entry: async (ctx: JobContext) => {
-    const vad = ctx.proc.userData.vad! as silero.VAD;
+    // const vad = ctx.proc.userData.vad! as silero.VAD;
 
     // Set up a voice AI pipeline using OpenAI, Cartesia, AssemblyAI, and the LiveKit turn detector
     let instructions = `You are a helpful voice AI assistant. The user is interacting with you via voice. Your responses are concise and to the point.`;
@@ -226,20 +224,12 @@ export default defineAgent({
     }
 
     const session = new voice.AgentSession({
-      //  turnDetection: new livekit.turnDetector.EnglishModel(),
-       llm: new google.beta.realtime.RealtimeModel({
-          model: "gemini-2.5-flash-native-audio-preview-12-2025",
-          voice: "Puck",
-          temperature: 0.8,
-          instructions: instructions,
-          // realtimeInputConfig: {
-          //   automaticActivityDetection: {
-          //     disabled: true,
-          //   }
-          // }
-       }),
-      //  vad,
-      //  stt: new inference.STT({ language: 'en' }),
+      llm: new google.beta.realtime.RealtimeModel({
+         model: "gemini-2.5-flash-native-audio-preview-12-2025",
+         voice: "Puck",
+         temperature: 0.8,
+         instructions: instructions,
+      }),
     });
 
     const assistant = new Assistant(instructions);
@@ -289,4 +279,4 @@ export default defineAgent({
   },
 });
 
-cli.runApp(new WorkerOptions({ agent: fileURLToPath(import.meta.url) }));
+cli.runApp(new ServerOptions({ agent: fileURLToPath(import.meta.url) }));
