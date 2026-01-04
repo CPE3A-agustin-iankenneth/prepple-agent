@@ -1,99 +1,80 @@
-<a href="https://livekit.io/">
-  <img src="./.github/assets/livekit-mark.png" alt="LiveKit logo" width="100" height="100">
-</a>
+# Prepple Agent
 
-# LiveKit Agents Starter - Node.js
+This is the AI Voice Agent component for **Prepple**, an automated HR interview platform. It is designed to conduct autonomous initial screening interviews with candidates.
 
-A complete starter project for building voice AI apps with [LiveKit Agents for Node.js](https://github.com/livekit/agents-js) and [LiveKit Cloud](https://cloud.livekit.io/).
+This agent is used in conjunction with the main Prepple application:
+👉 **[Prepple AI Repository](https://github.com/CPE3A-agustin-iankenneth/prepple-ai)**
 
-The starter project includes:
+## Overview
 
-- A simple voice AI assistant, ready for extension and customization
-- A voice AI pipeline with [models](https://docs.livekit.io/agents/models) from OpenAI, Cartesia, and AssemblyAI served through LiveKit Cloud
-  - Easily integrate your preferred [LLM](https://docs.livekit.io/agents/models/llm/), [STT](https://docs.livekit.io/agents/models/stt/), and [TTS](https://docs.livekit.io/agents/models/tts/) instead, or swap to a realtime model like the [OpenAI Realtime API](https://docs.livekit.io/agents/models/realtime/openai)
-- [LiveKit Turn Detector](https://docs.livekit.io/agents/build/turns/turn-detector/) for contextually-aware speaker detection, with multilingual support
-- [Background voice cancellation](https://docs.livekit.io/home/cloud/noise-cancellation/)
-- Integrated [metrics and logging](https://docs.livekit.io/agents/build/metrics/)
-- A Dockerfile ready for [production deployment](https://docs.livekit.io/agents/ops/deployment/)
+The Prepple Agent is built using [LiveKit Agents](https://github.com/livekit/agents-js) and integrates with various AI services to provide a seamless interview experience.
 
-This starter app is compatible with any [custom web/mobile frontend](https://docs.livekit.io/agents/start/frontend/) or [SIP-based telephony](https://docs.livekit.io/agents/start/telephony/).
+### Key Features
 
-## Dev Setup
+-   **Autonomous Interviews**: Conducts voice-based interviews based on job descriptions and custom instructions.
+-   **Resume Parsing**: Analyzes candidate resumes (PDF/DOCX) to tailor interview questions.
+-   **Real-time Interaction**: Uses LiveKit for low-latency voice communication.
+-   **AI Intelligence**: Powered by Google Gemini (via `@livekit/agents-plugin-google`) for natural language understanding and generation.
+-   **Turn Detection**: Utilizes Silero VAD and LiveKit Turn Detector for natural conversation flow.
 
-This project uses [pnpm](https://pnpm.io/) as the package manager.
+## Tech Stack
 
-Clone the repository and install dependencies:
+-   **Framework**: Node.js, LiveKit Agents
+-   **AI Models**: Google Gemini (LLM), Deepgram/Google (STT/TTS via LiveKit plugins)
+-   **Tools**: `pdf-parse`, `mammoth` (for document parsing)
 
-```console
-cd agent-starter-node
-pnpm install
-```
+## Development Setup
 
-Sign up for [LiveKit Cloud](https://cloud.livekit.io/) then set up the environment by copying `.env.example` to `.env.local` and filling in the required keys:
+### Prerequisites
 
-- `LIVEKIT_URL`
-- `LIVEKIT_API_KEY`
-- `LIVEKIT_API_SECRET`
+-   Node.js >= 22.0.0
+-   pnpm >= 10.0.0
+-   LiveKit Cloud account (or self-hosted)
 
-You can load the LiveKit environment automatically using the [LiveKit CLI](https://docs.livekit.io/home/cli/cli-setup):
+### Installation
 
-```bash
-lk cloud auth
-lk app env -w -d .env.local
-```
+1.  Clone the repository:
+    ```bash
+    git clone <your-repo-url>
+    cd prepple-agent
+    ```
 
-## Run the agent
+2.  Install dependencies:
+    ```bash
+    pnpm install
+    ```
 
-Before your first run, you must download certain models such as [Silero VAD](https://docs.livekit.io/agents/build/turns/vad/) and the [LiveKit turn detector](https://docs.livekit.io/agents/build/turns/turn-detector/):
+3.  Set up environment variables:
+    Copy `.env.example` to `.env.local` and fill in your LiveKit credentials:
+    ```env
+    LIVEKIT_URL=...
+    LIVEKIT_API_KEY=...
+    LIVEKIT_API_SECRET=...
+    ```
 
-```console
-pnpm run download-files
-```
+### Running the Agent
 
-To run the agent during development, use the `dev` command:
+1.  **Download required models** (first time only):
+    ```bash
+    pnpm run download-files
+    ```
 
-```console
-pnpm run dev
-```
+2.  **Start in development mode**:
+    ```bash
+    pnpm run dev
+    ```
 
-In production, use the `start` command:
+3.  **Production build**:
+    ```bash
+    pnpm run build
+    pnpm run start
+    ```
 
-```console
-pnpm run start
-```
+## Deployment
 
-## Frontend & Telephony
-
-Get started quickly with our pre-built frontend starter apps, or add telephony support:
-
-| Platform         | Link                                                                                                                | Description                                        |
-| ---------------- | ------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------- |
-| **Web**          | [`livekit-examples/agent-starter-react`](https://github.com/livekit-examples/agent-starter-react)                   | Web voice AI assistant with React & Next.js        |
-| **iOS/macOS**    | [`livekit-examples/agent-starter-swift`](https://github.com/livekit-examples/agent-starter-swift)                   | Native iOS, macOS, and visionOS voice AI assistant |
-| **Flutter**      | [`livekit-examples/agent-starter-flutter`](https://github.com/livekit-examples/agent-starter-flutter)               | Cross-platform voice AI assistant app              |
-| **React Native** | [`livekit-examples/voice-assistant-react-native`](https://github.com/livekit-examples/voice-assistant-react-native) | Native mobile app with React Native & Expo         |
-| **Android**      | [`livekit-examples/agent-starter-android`](https://github.com/livekit-examples/agent-starter-android)               | Native Android app with Kotlin & Jetpack Compose   |
-| **Web Embed**    | [`livekit-examples/agent-starter-embed`](https://github.com/livekit-examples/agent-starter-embed)                   | Voice AI widget for any website                    |
-| **Telephony**    | [📚 Documentation](https://docs.livekit.io/agents/start/telephony/)                                                 | Add inbound or outbound calling to your agent      |
-
-For advanced customization, see the [complete frontend guide](https://docs.livekit.io/agents/start/frontend/).
-
-## Using this template repo for your own project
-
-Once you've started your own project based on this repo, you should:
-
-1. **Check in your `pnpm-lock.yaml`**: This file is currently untracked for the template, but you should commit it to your repository for reproducible builds and proper configuration management. (The same applies to `livekit.toml`, if you run your agents in LiveKit Cloud)
-
-2. **Remove the git tracking test**: Delete the "Check files not tracked in git" step from `.github/workflows/tests.yml` since you'll now want this file to be tracked. These are just there for development purposes in the template repo itself.
-
-## Deploying to production
-
-This project is production-ready and includes a working `Dockerfile`. To deploy it to LiveKit Cloud or another environment, see the [deploying to production](https://docs.livekit.io/agents/ops/deployment/) guide.
-
-## Self-hosted LiveKit
-
-You can also self-host LiveKit instead of using LiveKit Cloud. See the [self-hosting](https://docs.livekit.io/home/self-hosting/) guide for more information. If you choose to self-host, you'll need to also use [model plugins](https://docs.livekit.io/agents/models/#plugins) instead of LiveKit Inference and will need to remove the [LiveKit Cloud noise cancellation](https://docs.livekit.io/home/cloud/noise-cancellation/) plugin.
+This project includes a `Dockerfile` for containerized deployment. Refer to the [LiveKit Deployment Guide](https://docs.livekit.io/agents/ops/deployment/) for more details.
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License.
+

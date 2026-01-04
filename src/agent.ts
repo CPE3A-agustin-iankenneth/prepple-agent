@@ -228,7 +228,7 @@ export default defineAgent({
     const session = new voice.AgentSession({
       //  turnDetection: new livekit.turnDetector.EnglishModel(),
        llm: new google.beta.realtime.RealtimeModel({
-          model: "gemini-2.5-flash-native-audio-preview-09-2025",
+          model: "gemini-2.5-flash-native-audio-preview-12-2025",
           voice: "Puck",
           temperature: 0.8,
           instructions: instructions,
